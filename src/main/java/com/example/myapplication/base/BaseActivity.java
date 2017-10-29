@@ -3,6 +3,7 @@ package com.example.myapplication.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -34,6 +35,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		if (getSupportActionBar()!=null){
+			getSupportActionBar().hide();
+		}
 		super.onCreate(savedInstanceState);
 		spUtil = new SharePreference(this, "config");
 		setContentView(getLayoutId());

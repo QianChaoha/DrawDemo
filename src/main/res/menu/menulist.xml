@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="九宫格" android:id="@+id/nine"/>
+
+    <item android:title="四宫格" android:id="@+id/four"/>
+    <item android:title="一宫格" android:id="@+id/one"/>
+</menu>

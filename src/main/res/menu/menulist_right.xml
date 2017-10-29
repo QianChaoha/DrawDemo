@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="1" android:id="@+id/paint_one"/>
+    <item android:title="2" android:id="@+id/paint_two"/>
+
+    <item android:title="5" android:id="@+id/paint_five"/>
+    <item android:title="8" android:id="@+id/paint_eight"/>
+    <item android:title="10" android:id="@+id/paint_ten"/>
+</menu>

@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activity.MainActivity;
 import com.example.myapplication.interfaces.OnDrawInterface;
 
 public class MyImageView extends View {
@@ -36,6 +37,7 @@ public class MyImageView extends View {
     private float preX, preY;// 之前的XY的位置，用于下面的手势移动
     private int view_width, view_height;// 屏幕的高度与宽度
     boolean isInit = false, canDraw = false;
+    private int paintWidth;
 
     public OnDrawInterface getDrawInterface() {
         return drawInterface;
@@ -67,23 +69,22 @@ public class MyImageView extends View {
     }
 
     public void init(int imageViewWidth, int imageViewHeight) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-        path = new Path();
-        paint = new Paint();
-        cacheCanvas = new Canvas();
-        // 获取屏幕的高度与宽度
-        view_width = imageViewWidth;
-        view_height = imageViewHeight;
-        cacheBitmap = Bitmap.createBitmap(view_width, view_height,
-                Config.ARGB_8888);// 建立图像缓冲区用来保存图像
-        cacheCanvas.setBitmap(cacheBitmap);
-//        cacheCanvas.drawBitmap(bitmap,new Matrix(),paint);
-        paint.setColor(Color.BLACK);// 设置画笔的默认颜色
-        paint.setStyle(Paint.Style.STROKE);// 设置画笔的填充方式为无填充、仅仅是画线
-        paint.setStrokeWidth(1);// 设置画笔的宽度为1
-        cacheCanvas.save();
-        invalidate();
+        if (imageViewHeight>0&&imageViewWidth>0){
+            path = new Path();
+            paint = new Paint();
+            cacheCanvas = new Canvas();
+            // 获取屏幕的高度与宽度
+            view_width = imageViewWidth;
+            view_height = imageViewHeight;
+            cacheBitmap = Bitmap.createBitmap(view_width, view_height,
+                    Config.ARGB_8888);// 建立图像缓冲区用来保存图像
+            cacheCanvas.setBitmap(cacheBitmap);
+            paint.setColor(Color.RED);// 设置画笔的默认颜色
+            paint.setStyle(Paint.Style.STROKE);// 设置画笔的填充方式为无填充、仅仅是画线
+            paint.setStrokeWidth(5);// 设置画笔的宽度为5
+            cacheCanvas.save();
+            invalidate();
+        }
     }
 
     @Override
@@ -105,6 +106,7 @@ public class MyImageView extends View {
                     path.moveTo(x, y);// 绘图的起始点
                     preX = x;
                     preY = y;
+                    paint.setStrokeWidth(MainActivity.paintWidth);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     drawInterface.hasDraw();
@@ -138,7 +140,6 @@ public class MyImageView extends View {
         file.createNewFile();
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         cacheBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);// 以100%的品质创建png
-        // 人走带门
         fileOutputStream.flush();
         fileOutputStream.close();
         Toast.makeText(getContext(),
@@ -150,4 +151,5 @@ public class MyImageView extends View {
     public void restore() {
        init(view_width,view_height);
     }
+
 }
