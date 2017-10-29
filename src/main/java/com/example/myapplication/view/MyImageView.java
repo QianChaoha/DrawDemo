@@ -36,7 +36,7 @@ public class MyImageView extends View {
     public Paint paint;// 画笔
     private float preX, preY;// 之前的XY的位置，用于下面的手势移动
     private int view_width, view_height;// 屏幕的高度与宽度
-    boolean isInit = false, canDraw = false;
+    boolean isInit = false;
     private int paintWidth;
 
     public OnDrawInterface getDrawInterface() {
@@ -55,13 +55,7 @@ public class MyImageView extends View {
         isInit = init;
     }
 
-    public boolean isCanDraw() {
-        return canDraw;
-    }
 
-    public void setCanDraw(boolean canDraw) {
-        this.canDraw = canDraw;
-    }
 
     public MyImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -90,14 +84,14 @@ public class MyImageView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (canDraw && canvas != null) {
+        if (MainActivity.canDraw && canvas != null) {
             canvas.drawBitmap(cacheBitmap, 0, 0, paint);// 把cacheBitmap画到DrawView上
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (canDraw) {
+        if (MainActivity.canDraw) {
             // 获取触摸位置
             float x = event.getX();
             float y = event.getY();

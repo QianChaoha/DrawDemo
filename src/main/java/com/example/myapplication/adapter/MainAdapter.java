@@ -63,17 +63,14 @@ public class MainAdapter extends BaseAdapter<ItemData> {
             imageView.init(layoutParams.width,layoutParams.height);
         }
         if (0==getItem(position).hint){
-            hint.setBackgroundResource(R.mipmap.check_no);
-            imageView.setCanDraw(false);
+            hint.setVisibility(View.GONE);
             if ( getItem(position).restore){
                 imageView.restore();
             }
             ((MainActivity)context).setInterceptTouchEvent(false);
             rbOk.setChecked(true);
-        }else if(1==getItem(position).hint){
-            hint.setBackgroundResource(R.mipmap.check_ok);
-            imageView.setCanDraw(true);
         }else {
+            hint.setVisibility(View.VISIBLE);
             hint.setBackgroundResource(R.mipmap.icon_delete_red);
             rbFault.setChecked(true);
         }
@@ -82,8 +79,9 @@ public class MainAdapter extends BaseAdapter<ItemData> {
             public void hasDraw() {
                 //让gridView不要拦截事件
                 ((MainActivity)context).setInterceptTouchEvent(true);
+                hint.setVisibility(View.VISIBLE);
                 hint.setBackgroundResource(R.mipmap.icon_delete_red);
-                list.get(position).hint=2;
+                list.get(position).hint=1;
                 rbFault.setChecked(true);
             }
         });
@@ -92,12 +90,10 @@ public class MainAdapter extends BaseAdapter<ItemData> {
             public void onClick(View v) {
                 ItemData item = list.get(position);
                 if (0==item.hint){
+                    //表示初始化状态
                     item.hint=1;
-                    imageView.setCanDraw(true);
                 }else if(1==item.hint){
-                    item.hint=2;
-
-                }else {
+                    //表示可清空状态，此状态点击后可初始化画布
                     item.hint=0;
                     getItem(position).restore=true;
                 }

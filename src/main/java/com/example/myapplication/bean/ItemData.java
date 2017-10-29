@@ -6,9 +6,8 @@ package com.example.myapplication.bean;
 
 public class ItemData {
     /**
-     * 0表示初始化状态，未被选中,此状态不可涂鸦
-     * 1表示选中状态,此状态可以涂鸦
-     * 2表示可清空状态，此状态点击后可初始化画布
+     * 0表示初始化状态
+     * 1表示可清空状态，此状态点击后可初始化画布
      */
     public int hint;
     public boolean init;

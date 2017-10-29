@@ -46,6 +46,13 @@
             android:paddingRight="10dp"
             android:src="@mipmap/icon_info_normal"
              />
+       <CheckBox
+           android:id="@+id/cbHint"
+           android:layout_width="35dp"
+           android:layout_height="35dp"
+           android:layout_centerVertical="true"
+           android:paddingRight="10dp"
+           android:layout_toLeftOf="@id/img_right"/>
 
     </RelativeLayout>
     <!--<RadioGroup-->

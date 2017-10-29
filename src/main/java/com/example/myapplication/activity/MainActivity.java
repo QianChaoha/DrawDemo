@@ -3,7 +3,10 @@ package com.example.myapplication.activity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.example.myapplication.R;
@@ -25,8 +28,11 @@ public class MainActivity extends BaseActivity {
     int num = 9;
     private MainAdapter mainAdapter;
     ArrayList arrayList = new ArrayList();
-    PopupMenu popupMenuLeft,popupMenuRight;
-    public static int paintWidth=5;
+    PopupMenu popupMenuLeft, popupMenuRight;
+    public static int paintWidth = 5;
+    boolean hint = false;
+    public static boolean canDraw = false;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -36,7 +42,7 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         View imageLeft = findViewById(R.id.img_left);
         View img_right = findViewById(R.id.img_right);
-        popupMenuLeft= PopupFactory.create(this, imageLeft, R.menu.menulist, new PopupMenu.OnMenuItemClickListener() {
+        popupMenuLeft = PopupFactory.create(this, imageLeft, R.menu.menulist, new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
@@ -54,30 +60,30 @@ public class MainActivity extends BaseActivity {
                         break;
 
                 }
-                addData(num,true);
+                addData(num, true);
                 mainAdapter.setNum(num);
                 mainAdapter.notifyDataSetChanged();
                 return false;
             }
         });
-        popupMenuRight= PopupFactory.create(this, img_right, R.menu.menulist_right, new PopupMenu.OnMenuItemClickListener() {
+        popupMenuRight = PopupFactory.create(this, img_right, R.menu.menulist_right, new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.paint_one:
-                         setPaintWidth(1);
+                        setPaintWidth(1);
                         break;
                     case R.id.paint_two:
-                         setPaintWidth(2);
+                        setPaintWidth(2);
                         break;
                     case R.id.paint_five:
-                         setPaintWidth(5);
+                        setPaintWidth(5);
                         break;
                     case R.id.paint_eight:
-                         setPaintWidth(8);
+                        setPaintWidth(8);
                         break;
                     case R.id.paint_ten:
-                         setPaintWidth(10);
+                        setPaintWidth(10);
                         break;
 
                 }
@@ -106,18 +112,31 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-                addData(num,false);
+                addData(num, false);
                 mainAdapter.notifyDataSetChanged();
                 refreshGridView.onRefreshComplete();
             }
         });
         gridView = refreshGridView.getRefreshableView();
         gridView.setNumColumns(3);
-        addData(num,false);
+        addData(num, false);
+        final CheckBox cbHint = (CheckBox) findViewById(R.id.cbHint);
+        cbHint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    //可以编辑
+
+                } else {
+                    //不可以编辑
+                }
+                canDraw=isChecked;
+            }
+        });
     }
 
-    private void addData(int num,boolean cleanData) {
-        if (cleanData){
+    private void addData(int num, boolean cleanData) {
+        if (cleanData) {
             arrayList.clear();
         }
         for (int i = 0; i < num; i++) {
@@ -145,6 +164,7 @@ public class MainActivity extends BaseActivity {
         refreshGridView.requestDisallowInterceptTouchEvent(disallowIntercept);
         gridView.requestDisallowInterceptTouchEvent(disallowIntercept);
     }
+
     public void setPaintWidth(int paintWidth) {
         MainActivity.paintWidth = paintWidth;
     }
