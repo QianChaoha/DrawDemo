@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity {
     private RadioGroup radioGroup;
     private boolean isFirst = true;
     private GridView gridView;
-    int num = 9;
+    int num = 18;
     private MainAdapter mainAdapter;
     ArrayList arrayList = new ArrayList();
     PopupMenu popupMenuLeft, popupMenuRight;
@@ -47,21 +47,21 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nine:
-                        num = 9;
+                        num = 18;
                         gridView.setNumColumns(3);
                         break;
                     case R.id.four:
-                        num = 4;
+                        num = 8;
                         gridView.setNumColumns(2);
                         break;
                     case R.id.one:
-                        num = 1;
+                        num = 2;
                         gridView.setNumColumns(1);
                         break;
 
                 }
                 addData(num, true);
-                mainAdapter.setNum(num);
+                mainAdapter.setNum(num/2);
                 mainAdapter.notifyDataSetChanged();
                 return false;
             }
@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         refreshGridView = (PullToRefreshGridView) findViewById(R.id.gridView);
-        refreshGridView.setMode(PullToRefreshBase.Mode.BOTH);
+        refreshGridView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         refreshGridView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
@@ -112,9 +112,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-                addData(num, false);
-                mainAdapter.notifyDataSetChanged();
-                refreshGridView.onRefreshComplete();
+
             }
         });
         gridView = refreshGridView.getRefreshableView();
@@ -130,7 +128,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     //不可以编辑
                 }
-                canDraw=isChecked;
+                canDraw = isChecked;
             }
         });
     }
@@ -149,11 +147,17 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    public void loadmore() {
+        addData(num, false);
+        mainAdapter.notifyDataSetChanged();
+        refreshGridView.onRefreshComplete();
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (isFirst) {
-            mainAdapter = new MainAdapter(this, arrayList, gridView.getHeight(), num);
+            mainAdapter = new MainAdapter(this, arrayList, gridView.getHeight(), num/2);
             gridView.setAdapter(mainAdapter);
             setPaintWidth(5);
             isFirst = false;
